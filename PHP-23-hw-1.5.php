@@ -9,7 +9,7 @@
 
   <body>
     <h1>Домашнее задание к лекции 1.5 «Стандартные функции»</h1>
-    <h2>Погода в Москве</h2>
+
 
 <?php
     $city_id = "?id=524901";
@@ -19,15 +19,16 @@
     $weather_json = file_get_contents ($request);
 
     $cur_weather = json_decode ($weather_json, true);
+    $icon_uri = "http://openweathermap.org/img/w/" . $cur_weather["weather"][0]["icon"] . ".png";
 
-    echo "<p>Group of weather parameters (Rain, Snow, Extreme etc.): " . $cur_weather["weather"][0]["main"] . "</p>";
-    echo "<p>Weather condition within the group: " . $cur_weather["weather"][0]["description"] . "</p>";
-
-    echo "<p>Temperature: " . $cur_weather["main"]["temp"] . "</p>";
-    echo "<p>Atmospheric pressure (on the sea level, if there is no sea_level or grnd_level data), hPa: " . $cur_weather["main"]["pressure"] . "</p>";
-    echo "<p>Humidity, %: " . $cur_weather["main"]["humidity"] . "</p>";
-    echo "<p>Minimum temperature at the moment: " . $cur_weather["main"]["temp_min"] . "</p>";
-    echo "<p>Maximum temperature at the moment: " . $cur_weather["main"]["temp_max"] . "</p>";
+    echo "<h2>Погода в Москве" .  "<img src=\"" . $icon_uri . "\" alt=\"\"></h2>";
+    echo "<p>Общий характер погоды: " . $cur_weather["weather"][0]["main"] . "</p>";
+    echo "<p>Описание погоды: " . $cur_weather["weather"][0]["description"] . "</p>";
+    echo "<p>Температура: " .  ($cur_weather["main"]["temp"] - 273.15) . " градусов Цельсия</p>";
+    echo "<p>Атмосферное давление: " . round($cur_weather["main"]["pressure"] / 1.333, 1) . " мм рт.ст.</p>";
+    echo "<p>Влажность: " . $cur_weather["main"]["humidity"] . "%</p>";
+    echo "<p>Минимальная температура: " . ($cur_weather["main"]["temp_min"] - 273.15) . " градусов Цельсия</p>";
+    echo "<p>Максимальная температура: " . ($cur_weather["main"]["temp_max"] - 273.15) . " градусов Цельсия</p>";
 ?>
 
   </body>
